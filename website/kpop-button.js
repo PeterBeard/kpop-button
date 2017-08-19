@@ -31,7 +31,8 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-    if(player.getPlayerState() == 0) {
+    // 0 is ended, -1 is error. Either way, play the next video.
+    if(player.getPlayerState() <= 0) {
         document.getElementById("kpop-button").click();
     }
 }
