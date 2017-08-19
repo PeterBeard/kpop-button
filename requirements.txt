@@ -1,0 +1,12 @@
+beautifulsoup4==4.6.0
+certifi==2017.7.27.1
+chardet==3.0.4
+idna==2.6
+MechanicalSoup==0.7.0
+pkg-resources==0.0.0
+praw==5.0.1
+prawcore==0.11.0
+requests==2.18.4
+six==1.10.0
+update-checker==0.16
+urllib3==1.22

@@ -1,0 +1,50 @@
+html,body {
+    margin: 0;
+    padding: 0;
+}
+body {
+    background: #088 none;
+    display: grid;
+    font: 18px/22px "Noto Sans", Arial, Helvetica, sans-serif;
+}
+body.gif {
+    background: #088 url('i/party-time.gif') repeat top left;
+}
+
+a:link, a:active, a:visited, a:hover {
+    color: inherit;
+}
+#kpop-button {
+    background: #fff url("i/button.png") no-repeat top left;
+    border: 2px solid #f00;
+    border-top-color: #dbdbdb;
+    border-left-color: #dbdbdb;
+    border-bottom-color: #535353;
+    border-right-color: #535353;
+    color: rgba(0, 0, 0, 0);
+    display: inline-block;
+    width: 300px;
+    height: 150px;
+}
+#kpop-button:hover {
+    background-position: top right;
+}
+
+#content {
+    grid-column: 2 / span 1;
+    text-align: center;
+    width: 960px;
+}
+#footer {
+    background: #333 none;
+    color: #999;
+    font-size: 12px;
+    padding: 1em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+#footer p {
+    margin: 0;
+    padding: 0;
+}
