@@ -115,10 +115,36 @@ def get_top_videos(time="week"):
     return list(set(videos))
 
 
+def load_json(list_file):
+    """Load an existing video list from a JSON file.
+    
+    Returns a list of Video tuples or an empty list if the file failed to open
+    """
+    videos = []
+    with open(list_file, "r") as fh:
+        data = json.load(fh)
+        videos = [Video(v["title"], v["url"]) for v in data]
+    return videos
+
+
 def main():
-    JSON_FILE = "website/monthly-top.json"
-    videos = get_top_videos("month")
-    print("Got a total of {} videos.".format(len(videos)))
+    JSON_FILE = "website/top-all-time.json"
+
+    # Load existing videos
+    videos = load_json(JSON_FILE)
+    old_count = len(videos)
+    print("Loaded {} existing videos.".format(old_count))
+    
+    # Load new videos and remove duplicates
+    videos += get_top_videos("all")
+    videos = list(set(videos))
+    new_count = len(videos)
+    print("Found {} new videos ({} total).".format(
+        (new_count - old_count),
+        len(videos)
+    ))
+
+    # Write list to JSON
     with open(JSON_FILE, "w") as fh:
         # Convert tuples to dicts so we get keys in the JSON
         fh.write(json.dumps([v._asdict() for v in videos]))
