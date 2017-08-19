@@ -74,12 +74,6 @@ function init() {
     // Load the list of K-Pop videos
     load_kpop(function(json) {
         videos = shuffle_array(JSON.parse(json));
-        // Extract video IDs
-        for(let i = 0; i < videos.length; i++)
-        {
-            let url = videos[i].url;
-            videos[i].id = url.substr(url.indexOf("v=")+2, 11);
-        }
         document.getElementById("current-index").value = 1;
         // Play a random video
         document.getElementById("kpop-button").addEventListener("click", function() {

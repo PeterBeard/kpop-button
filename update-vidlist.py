@@ -12,8 +12,8 @@ import requests
 import mechanicalsoup as ms
 
 
-# Each video is identified by a title and a url
-Video = namedtuple("Video", "title url")
+# Each video is identified by a title and a video id
+Video = namedtuple("Video", "title id")
 
 
 class KPopBrowser(ms.StatefulBrowser):
@@ -29,6 +29,11 @@ class KPopBrowser(ms.StatefulBrowser):
     def open(self, *args, **kwargs):
         """Open a page using the correct user-agent"""
         return super().open(headers=self.headers, *args, **kwargs)
+
+
+def link_to_id(link):
+    """Convert a YouTube link to a video ID"""
+    return link.split("v=")[1][:11]
 
 
 def get_flair(soup):
@@ -70,7 +75,7 @@ def get_music_videos(things, threshold):
         title = link.get_text()
         url = link.get("href")
         if score > threshold and "youtube" in url and get_flair(thing) == MV_FLAIR:
-            videos.append(Video(title, url))
+            videos.append(Video(title, link_to_id(url)))
 
     return videos
 
@@ -121,9 +126,12 @@ def load_json(list_file):
     Returns a list of Video tuples or an empty list if the file failed to open
     """
     videos = []
-    with open(list_file, "r") as fh:
-        data = json.load(fh)
-        videos = [Video(v["title"], v["url"]) for v in data]
+    try:
+        with open(list_file, "r") as fh:
+            data = json.load(fh)
+            videos = [Video(v["title"], v["id"]) for v in data]
+    except FileNotFoundError:
+        videos = []
     return videos
 
 
