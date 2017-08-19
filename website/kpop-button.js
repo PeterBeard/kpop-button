@@ -48,7 +48,20 @@ function random_bg(bgs) {
 
 function init() {
     // Randomize the background image
-    let bgs = new Array("party-time", "ya", "bw-dance", "chu", "dance-1", "dance-2", "glasses", "omg", "yuha", "suran");
+    let bgs = new Array(
+        "chu",
+        "dance-2",
+        "glasses",
+        "omg",
+        "party-time",
+        "psy",
+        "suran",
+        "tv",
+        "wow",
+        "ya",
+        "yesiam",
+        "yuha"
+    );
     random_bg(bgs);
 
     // Set up the YouTube API
