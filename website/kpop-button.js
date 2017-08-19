@@ -14,6 +14,7 @@ function load_kpop(callback) {
 
 var videos;
 var player;
+var click_cooldown = false;
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
     height: '566',
@@ -31,7 +32,8 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-    if(player.getPlayerState() == 0) {
+    // 0 is ended, -1 is error. Either way, play the next video.
+    if(player.getPlayerState() <= 0) {
         document.getElementById("kpop-button").click();
     }
 }
@@ -81,7 +83,11 @@ function init() {
 }
 
 function play_video(video) {
-    player.loadVideoById(video.id, 0, "large");
+    if(!click_cooldown) {
+        player.loadVideoById(video.id, 0, "large");
+    }
+    click_cooldown = true;
+    setTimeout(function() { click_cooldown = false; }, 500);
 }
 
 function randint(min, max) {
