@@ -38,15 +38,20 @@ function onPlayerStateChange(event) {
     }
 }
 
-function random_bg(bgs) {
-    let choice = randint(0, bgs.length);
-    let body = document.getElementsByTagName("body")[0];
-    body.className = "gif";
-    body.style.backgroundImage = "url('i/bg/" + bgs[choice] + ".gif')";
+function get_animation_cookie() {
+    return !(document.cookie == "animation=false");
 }
 
-function init() {
-    // Randomize the background image
+function toggle_animation_cookie() {
+    if(document.cookie == "animation=false") {
+        document.cookie = "animation=true";
+    } else {
+        document.cookie = "animation=false";
+    }
+    random_bg();
+}
+
+function random_bg() {
     let bgs = new Array(
         "chu",
         "dance-2",
@@ -62,7 +67,20 @@ function init() {
         "yesiam",
         "yuha"
     );
-    random_bg(bgs);
+    let body = document.getElementsByTagName("body")[0];
+    if(get_animation_cookie()) {
+        let choice = randint(0, bgs.length);
+        body.className = "gif";
+        body.style.backgroundImage = "url('i/bg/" + bgs[choice] + ".gif')";
+    } else {
+        body.className = "static";
+        body.style.backgroundImage = null;
+    }
+}
+
+function init() {
+    // Randomize the background image
+    random_bg();
 
     // Set up the YouTube API
     var tag = document.createElement('script');
@@ -87,6 +105,11 @@ function init() {
             curr_element.value = curr_video + 1;
         });
     });
+
+    document.getElementById("gif-toggle").addEventListener(
+        "click",
+        toggle_animation_cookie
+    );
 }
 
 function play_video(video) {
