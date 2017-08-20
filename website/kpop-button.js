@@ -40,7 +40,6 @@ function onPlayerStateChange(event) {
 
 function random_bg(bgs) {
     let choice = randint(0, bgs.length);
-    console.log("BG is " + bgs[choice]);
     let body = document.getElementsByTagName("body")[0];
     body.className = "gif";
     body.style.backgroundImage = "url('i/bg/" + bgs[choice] + ".gif')";
@@ -55,6 +54,7 @@ function init() {
         "omg",
         "party-time",
         "psy",
+        "roulette",
         "suran",
         "tv",
         "wow",
