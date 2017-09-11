@@ -39,15 +39,19 @@ function onPlayerStateChange(event) {
 }
 
 function get_animation_cookie() {
-    return !(document.cookie == "animation=false");
+    return document.cookie.indexOf("animation=true") > 0;
 }
 
 function toggle_animation_cookie() {
-    if(document.cookie == "animation=false") {
-        document.cookie = "animation=true";
-    } else {
-        document.cookie = "animation=false";
-    }
+    let COOKIE_LIFESPAN = 30 * 86400; // 30 days
+    let date = new Date();
+    date.setTime(date.getTime() + COOKIE_LIFESPAN);
+    let expires = '; expires=' + date.toGMTString();
+    let path = '; path=/';
+    // Read current cookie
+    let animation = get_animation_cookie();
+    // Set new cookie
+    document.cookie = "animation=" + (!animation) + expires + path;
     random_bg();
 }
 
