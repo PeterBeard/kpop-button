@@ -39,7 +39,7 @@ function onPlayerStateChange(event) {
 }
 
 function get_animation_cookie() {
-    return document.cookie.indexOf("animation=true") > 0;
+    return document.cookie.indexOf("animation=true") >= 0;
 }
 
 function toggle_animation_cookie() {
