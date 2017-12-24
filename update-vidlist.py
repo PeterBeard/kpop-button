@@ -7,6 +7,7 @@ Copyright Peter Beard, licensed under the GPLv3. See LICENSE for details.
 from time import sleep
 from collections import namedtuple
 import json
+import re
 
 import requests
 import mechanicalsoup as ms
@@ -55,7 +56,12 @@ def get_score(thing):
     """
     s = thing.select(".midcol .score.unvoted")
     if len(s) > 0:
-        return int(s[0].get_text())
+        score = s[0].get_text()
+        match = re.match('(?P<score>[0-9.]+)k', score)
+        if match is not None:
+            return int(float(match.group('score')) * 1000.0)
+        else:
+            return int(score)
     else:
         return 0
 
