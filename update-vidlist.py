@@ -20,7 +20,7 @@ Video = namedtuple("Video", "title id")
 class KPopBrowser(ms.StatefulBrowser):
     """Wraps StatefulBrowser so we can set the user-agent"""
     def __init__(self, *args, **kwargs):
-        BOT_USER_AGENT = "Kpopbot/0.1"
+        BOT_USER_AGENT = "Kpopbot/0.2"
 
         headers = requests.utils.default_headers()
         headers.update({"User-Agent": BOT_USER_AGENT})
@@ -103,7 +103,7 @@ def get_top_videos(time="week"):
     browser = KPopBrowser(
             soup_config={'features': 'html.parser'},
     )
-    browser.open("https://www.reddit.com/r/kpop/top/?sort=top&t={}".format(time))
+    browser.open("https://old.reddit.com/r/kpop/top/?sort=top&t={}".format(time))
     curr_page = browser.get_current_page()
     things = curr_page.select(".thing")
     videos += get_music_videos(things, SCORE_THRESHOLD)
