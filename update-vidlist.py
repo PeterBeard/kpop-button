@@ -20,7 +20,7 @@ Video = namedtuple("Video", "title id")
 class KPopBrowser(ms.StatefulBrowser):
     """Wraps StatefulBrowser so we can set the user-agent"""
     def __init__(self, *args, **kwargs):
-        BOT_USER_AGENT = "Kpopbot/0.2"
+        BOT_USER_AGENT = "Kpopbot/0.3"
 
         headers = requests.utils.default_headers()
         headers.update({"User-Agent": BOT_USER_AGENT})
@@ -113,14 +113,18 @@ def get_top_videos(time="week"):
         sleep(CRAWL_RATE_LIMIT)
         next_link = curr_page.select("a[rel~=next]")[0].get("href")
         response = browser.open(next_link)
-        curr_page = browser.get_current_page()
-        things = curr_page.select(".thing")
-        if len(things) > 0:
-            last_score = get_score(things[-1])
-            videos += get_music_videos(things, SCORE_THRESHOLD)
+        if 200 <= response.status_code < 300:
+            curr_page = browser.get_current_page()
+            things = curr_page.select(".thing")
+            if len(things) > 0:
+                last_score = get_score(things[-1])
+                videos += get_music_videos(things, SCORE_THRESHOLD)
+            else:
+                last_score = 0
+            print("Found {} videos so far".format(len(videos)))
         else:
-            last_score = 0
-        print("Found {} videos so far".format(len(videos)))
+            print(f"Received non-200 response ({response.status_code}); aborting")
+            break
 
     # Deduplicate and return list of videos
     return list(set(videos))
