@@ -103,7 +103,7 @@ def get_top_videos(time="week"):
     browser = KPopBrowser(
             soup_config={'features': 'html.parser'},
     )
-    browser.open("https://old.reddit.com/r/kpop/top/?sort=top&t={}".format(time))
+    browser.open(f"https://old.reddit.com/r/kpop/top/?sort=top&t={time}")
     curr_page = browser.get_current_page()
     things = curr_page.select(".thing")
     videos += get_music_videos(things, SCORE_THRESHOLD)
@@ -121,7 +121,7 @@ def get_top_videos(time="week"):
                 videos += get_music_videos(things, SCORE_THRESHOLD)
             else:
                 last_score = 0
-            print("Found {} videos so far".format(len(videos)))
+            print(f"Found {len(videos)} videos so far")
         else:
             print(f"Received non-200 response ({response.status_code}); aborting")
             break
@@ -151,22 +151,19 @@ def main():
     # Load existing videos
     videos = load_json(JSON_FILE)
     old_count = len(videos)
-    print("Loaded {} existing videos.".format(old_count))
+    print(f"Loaded {old_count} existing videos.")
     
     # Load new videos and remove duplicates
     videos += get_top_videos("all")
     videos = list(set(videos))
     new_count = len(videos)
-    print("Found {} new videos ({} total).".format(
-        (new_count - old_count),
-        len(videos)
-    ))
+    print(f"Found {new_count - old_count} new videos ({len(videos)} total).")
 
     # Write list to JSON
     with open(JSON_FILE, "w") as fh:
         # Convert tuples to dicts so we get keys in the JSON
         fh.write(json.dumps([v._asdict() for v in videos]))
-    print("Saved JSON to {}".format(JSON_FILE))
+    print(f"Saved JSON to {JSON_FILE}")
 
 
 if __name__ == "__main__":
